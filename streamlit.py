@@ -1,0 +1,35 @@
+import streamlit as st
+from fastai.vision.all import *
+
+st.title("Pet Breed Classifier")
+st.text("Built by Rafa Kim")
+
+
+def extract_breed_name(file_name):
+    p = Path(file_name)
+    breed_name_parts = p.stem.split("_")
+    final_breed_name = ""
+    length_parts = len(breed_name_parts) - 1
+    for i in range(length_parts):
+        final_breed_name += breed_name_parts[i]
+        if i != length_parts - 1:
+            final_breed_name += "_"
+    return final_breed_name
+
+
+breed_model = load_learner("cat_dog_breed_model.pkl")
+
+def predict(image):
+    img = PILImage.create(image)
+    pred_class, pred_idx, outputs = breed_model.precit(img)
+    return pred_class
+
+uploaded_file = st.file_uploader("Upload an Image...", type=["jpg", "png", "jpeg"])
+
+if uploaded_file is not None:
+    st.image(uploaded_file, caption="Uploaded Image", use_column_width=True)
+
+    prediction = predict(uploaded_file)
+
+st.text("Built with Streamlit and FastAI")
+

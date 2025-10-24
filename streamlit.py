@@ -21,7 +21,7 @@ breed_model = load_learner("cat_dog_breed_model.pkl")
 
 def predict(image):
     img = PILImage.create(image)
-    pred_class, pred_idx, outputs = breed_model.precit(img)
+    pred_class, pred_idx, outputs = breed_model.predict(img)
     return pred_class
 
 uploaded_file = st.file_uploader("Upload an Image...", type=["jpg", "png", "jpeg"])
